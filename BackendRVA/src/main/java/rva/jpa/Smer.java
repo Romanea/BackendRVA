@@ -1,26 +1,32 @@
 package rva.jpa;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
-
 
 /**
- * The persistent class for the artikl database table.
+ * The persistent class for the smer database table.
  * 
  */
 @Entity
-@NamedQuery(name="Smer.findAll", query="SELECT a FROM Artikl a")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+@NamedQuery(name="Smer.findAll", query="SELECT s FROM Smer s")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Smer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="SMER_ID_GENERATOR", sequenceName="SMER_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="SMER_ID_GENERATOR", sequenceName="SMER_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SMER_ID_GENERATOR")
 	private Integer id;
 
@@ -56,28 +62,28 @@ public class Smer implements Serializable {
 		return this.oznaka;
 	}
 
-	public void setOznaka(String proizvodjac) {
-		this.oznaka = proizvodjac;
+	public void setOznaka(String oznaka) {
+		this.oznaka = oznaka;
 	}
 
 	public List<Grupa> getGrupas() {
 		return this.grupas;
 	}
 
-	public void setStavkaPorudzbines(List<Grupa> stavkaPorudzbines) {
-		this.grupas = stavkaPorudzbines;
+	public void setGrupas(List<Grupa> grupas) {
+		this.grupas = grupas;
 	}
 
-	public Grupa addStavkaPorudzbine(Grupa stavkaPorudzbine) {
-		getGrupas().add(stavkaPorudzbine);
-		//stavkaPorudzbine.setSmerBean(this);
+	public Grupa addGrupa(Grupa grupa) {
+		getGrupas().add(grupa);
+		grupa.setSmer(this);
 
-		return stavkaPorudzbine;
+		return grupa;
 	}
 
 	public Grupa removeGrupa(Grupa grupa) {
 		getGrupas().remove(grupa);
-		//grupas.setGrupalBean(null);
+		grupa.setSmer(null);
 
 		return grupa;
 	}
