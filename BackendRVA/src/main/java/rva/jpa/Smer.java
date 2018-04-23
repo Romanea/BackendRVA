@@ -1,0 +1,91 @@
+package rva.jpa;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+/**
+ * The persistent class for the smer database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Smer.findAll", query="SELECT s FROM Smer s")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Smer implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@SequenceGenerator(name="SMER_ID_GENERATOR", sequenceName="SMER_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SMER_ID_GENERATOR")
+	private Integer id;
+
+	private String naziv;
+
+	private String oznaka;
+
+	//bi-directional many-to-one association to Grupa
+	@OneToMany(mappedBy="smer")
+	@JsonIgnore
+	private List<Grupa> grupas;
+
+	public Smer() {
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNaziv() {
+		return this.naziv;
+	}
+
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
+	public String getOznaka() {
+		return this.oznaka;
+	}
+
+	public void setOznaka(String oznaka) {
+		this.oznaka = oznaka;
+	}
+
+	public List<Grupa> getGrupas() {
+		return this.grupas;
+	}
+
+	public void setGrupas(List<Grupa> grupas) {
+		this.grupas = grupas;
+	}
+
+	public Grupa addGrupa(Grupa grupa) {
+		getGrupas().add(grupa);
+		grupa.setSmer(this);
+
+		return grupa;
+	}
+
+	public Grupa removeGrupa(Grupa grupa) {
+		getGrupas().remove(grupa);
+		grupa.setSmer(null);
+
+		return grupa;
+	}
+
+}
