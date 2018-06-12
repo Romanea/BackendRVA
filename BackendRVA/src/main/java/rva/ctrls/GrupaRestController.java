@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +40,7 @@ public class GrupaRestController {
 		return grupaRepo.getOne(id);
 	}
 	
+	@CrossOrigin
 	@DeleteMapping("grupe/{id}")
 	public ResponseEntity<Grupa> deleteGrupa(@PathVariable("id") Integer id) {
 		if(!grupaRepo.existsById(id)) {
@@ -50,6 +52,7 @@ public class GrupaRestController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@CrossOrigin
 	@PostMapping("grupe")
 	public ResponseEntity<Grupa> addGrupa(@RequestBody Grupa grupa) {
 		if(grupaRepo.existsById(grupa.getId())) {
@@ -59,7 +62,7 @@ public class GrupaRestController {
 		grupaRepo.save(grupa);
 		return new ResponseEntity<Grupa>(grupa, HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PutMapping("grupe")
 	public ResponseEntity<Grupa> updateGrupa(@RequestBody Grupa grupa) {
 		if(!grupaRepo.existsById(grupa.getId())) {

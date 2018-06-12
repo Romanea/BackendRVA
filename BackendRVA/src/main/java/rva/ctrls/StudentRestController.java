@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class StudentRestController {
 	public Student getStudent(@PathVariable("id") Integer id) {
 		return studentRepo.getOne(id);
 	}
-	
+	@CrossOrigin
 	@DeleteMapping("studenti/{id}")
 	public ResponseEntity<Student> deleteStudent(@PathVariable("id") Integer id) {
 		if(!studentRepo.existsById(id)) {
@@ -48,7 +49,7 @@ public class StudentRestController {
 		if(id == -100 && !studentRepo.existsById(id)) writeTestData();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PostMapping("studenti")
 	public ResponseEntity<Student> addStudent(@RequestBody Student student) {
 		if(studentRepo.existsById(student.getId())) {
@@ -58,7 +59,7 @@ public class StudentRestController {
 		studentRepo.save(student);
 		return new ResponseEntity<Student>(student, HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PutMapping("studenti")
 	public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
 		if(!studentRepo.existsById(student.getId())) {
