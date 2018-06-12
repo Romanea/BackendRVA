@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class SmerRestController {
 	public Smer getSmer(@PathVariable("id") Integer id) {
 		return smerRepo.getOne(id);
 	}
-	
+	@CrossOrigin
 	@Transactional
 	@DeleteMapping("smerovi/{id}")
 	public ResponseEntity<Smer> deleteSmer(@PathVariable("id") Integer id) {
@@ -49,7 +50,7 @@ public class SmerRestController {
 		if(id == -100 && !smerRepo.existsById(id)) writeTestData();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PostMapping("smerovi")
 	public ResponseEntity<Smer> addSmer(@RequestBody Smer smer) {
 		if(smerRepo.existsById(smer.getId())) {
@@ -59,7 +60,7 @@ public class SmerRestController {
 		smerRepo.save(smer);
 		return new ResponseEntity<Smer>(smer, HttpStatus.OK);
 	}
-	
+	@CrossOrigin
 	@PutMapping("smerovi")
 	public ResponseEntity<Smer> updateSmer(@RequestBody Smer smer) {
 		if(!smerRepo.existsById(smer.getId())) {
