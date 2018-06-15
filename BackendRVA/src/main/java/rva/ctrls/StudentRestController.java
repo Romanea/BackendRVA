@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import rva.jpa.Grupa;
 import rva.jpa.Student;
+import rva.repos.GrupaRepository;
 import rva.repos.StudentRepository;
 
 @RestController
@@ -25,6 +27,9 @@ public class StudentRestController {
 
 	@Autowired
 	private StudentRepository studentRepo;
+	
+	@Autowired
+	private GrupaRepository grupaRepo;
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -38,6 +43,14 @@ public class StudentRestController {
 	public Student getStudent(@PathVariable("id") Integer id) {
 		return studentRepo.getOne(id);
 	}
+	
+	@CrossOrigin
+	@GetMapping("studentiGrupe/{id}")
+	public Collection<Student> getStudentiGrupe(@PathVariable("id") int id){
+		Grupa g = grupaRepo.getOne(id);
+		return studentRepo.findByGrupa(g);
+	}
+	
 	@CrossOrigin
 	@DeleteMapping("studenti/{id}")
 	public ResponseEntity<Student> deleteStudent(@PathVariable("id") Integer id) {
@@ -49,6 +62,7 @@ public class StudentRestController {
 		if(id == -100 && !studentRepo.existsById(id)) writeTestData();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
 	@CrossOrigin
 	@PostMapping("studenti")
 	public ResponseEntity<Student> addStudent(@RequestBody Student student) {
